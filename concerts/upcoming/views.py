@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 import requests
 import json
-from .forms import ArtistForm
 from concerts.settings import API_KEY
 
 # Create your views here.
@@ -14,9 +13,12 @@ def upcoming_concerts(request):
 
 def concerts(request):
     
+    artist = request.GET['artist']
+
+
     url = "https://concerts-artists-events-tracker.p.rapidapi.com/artist"
 
-    querystring = {"name":'Falling in Reverse',"page":"1"}  #add perameter <artist> where 'Ed Sheeran' is
+    querystring = {"name": artist,"page":"1"}  #add perameter <artist> where 'Ed Sheeran' is
 
     headers = {
         "X-RapidAPI-Key": API_KEY,
