@@ -1,0 +1,8 @@
+{% extends "upcoming/base.html"%}
+{% block content %}
+    <form action= 'concerts/' method="POST">
+        {% csrf_token %}
+        <input type="search" name='artist'>
+        <input type="submit">
+    </form>
+{% endblock content%}

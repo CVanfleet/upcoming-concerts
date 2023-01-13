@@ -1,0 +1,26 @@
+{% extends "upcoming/base.html"%}
+{% block content %}
+    <h1>Upcoming Concerts</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Artist</th>
+                <th>Venue</th>
+                <th>Location</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for concert in concerts %}
+            <tr>
+                <td>{{concert.name}}</td>
+                <td>{{concert.location.name}}</td>
+                <td>{{concert.location.address.addressLocality}}, {{concert.location.address.region}} {{concert.location.address.addressCountry}}</td>
+                <td>{{concert.startDate}}</td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content%}
