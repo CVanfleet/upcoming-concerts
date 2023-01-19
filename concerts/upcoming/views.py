@@ -13,40 +13,52 @@ def upcoming_concerts(request):
 
 def concerts(request):
     
-    artist = request.GET['artist']
+    #artist = request.GET['artist']
 
 
-    url = "https://concerts-artists-events-tracker.p.rapidapi.com/artist"
+    #url = "https://concerts-artists-events-tracker.p.rapidapi.com/artist"
 
-    querystring = {"name": artist,"page":"1"}  #add perameter <artist> where 'Ed Sheeran' is
+    #querystring = {"name": artist,"page":"1"}  #add perameter <artist> where 'Ed Sheeran' is
 
-    headers = {
-        "X-RapidAPI-Key": API_KEY,
-        "X-RapidAPI-Host": "concerts-artists-events-tracker.p.rapidapi.com"
-    }
+    #headers = {
+    #    "X-RapidAPI-Key": API_KEY,
+    #    "X-RapidAPI-Host": "concerts-artists-events-tracker.p.rapidapi.com"
+    #}
 
     #response = requests.request("GET", url, headers=headers, params=querystring)
 
-    concerts_data = response.text
-    concerts = json.loads(concerts_data)            
+    #concerts_data = response.text
+    #concerts = json.loads(concerts_data)  
 
-    #concerts = [
-    #       {
-    #           'name': 'Ed Sheeran',
-    #           'location': {
-    #               'address': {
-    #                   'addressCountry': 'US',
-    #                   'addressLocality': 'Salt Lake City, UT'
-    #                   },
-    #                   'name': 'USANA'
-    #           },
-    #            'startDate': '2022-07-22T20:00:00-0700'
-    #        }
-    #]
+    concerts = [
+           {
+               'name': 'Ed Sheeran',
+               'location': {
+                   'address': {
+                       'addressCountry': 'US',
+                       'addressLocality': 'Salt Lake City',
+                       'addressRegion' : 'UT',
+                       },
+                       'name': 'USANA'
+               },
+                'startDate': '2022-07-22T20:00:00-0700',
+                'performer': [
+                    {
+                        'name': 'Ed Sheeran'
+                    },
+                    {
+                        'name': 'Budjerah'
+                    },
+                    {
+                        'name': 'Maisie Peters'
+                    }
+                ]
+            }
+    ]
 
     return render(request, 'upcoming/concerts.html', {
         'title': 'Home',
-        'concerts': concerts['data']
+        'concerts': concerts, #['data'],
         })
 
 def saved_concerts(request):

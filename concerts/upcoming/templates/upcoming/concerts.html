@@ -9,15 +9,17 @@
                 <th>Venue</th>
                 <th>Location</th>
                 <th>Date</th>
+                <th>All Peformers</th>
             </tr>
         </thead>
         <tbody>
-    {% for concert in concerts %}
+    {% for concert in concerts %}  
             <tr>
                 <td>{{concert.name}}</td>
                 <td>{{concert.location.name}}</td>
                 <td>{{concert.location.address.addressLocality}}, {{concert.location.address.addressRegion}}, {{concert.location.address.addressCountry}}</td>
                 <td>{{concert.startDate}}</td>
+                <td><a href="">{{concert.performer.0.name}}</a>, <a href="">{{concert.performer.1.name}}</a>, <a href="">{{concert.performer.2.name}}</a></td>
             </tr>
     {% endfor %}
         </tbody>
