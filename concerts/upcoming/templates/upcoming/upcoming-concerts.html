@@ -1,7 +1,14 @@
 {% extends "upcoming/base.html"%}
 {% block content %}
-    <form action= "concerts/" method="GET">
-        <input type="search" name='artist'>
-        <input type="submit">
-    </form>
+    <main class="m-0">
+        <div>
+            <div class="p-5">
+                <h1 class="text-center text-light">Search your favorite artist!</h1>
+                <form action= "concerts/" method="GET">
+                    <input type="search" name='artist' class="form-control text-center mb-2">
+                    <input type="submit" class="btn btn-secondary btn-lg btn-block" value="Search">
+                </form>
+            </div>
+        <div>
+    </main>
 {% endblock content%}

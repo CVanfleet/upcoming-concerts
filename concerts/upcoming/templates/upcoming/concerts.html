@@ -1,28 +1,39 @@
 {% extends "upcoming/base.html"%}
 {% block content %}
-    <h1>Upcoming Concerts</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Artist</th>
-                <th>Venue</th>
-                <th>Location</th>
-                <th>Date</th>
-                <th>All Peformers</th>
-            </tr>
-        </thead>
-        <tbody>
-    {% for concert in concerts %}  
-            <tr>
-                <td>{{concert.name}}</td>
-                <td>{{concert.location.name}}</td>
-                <td>{{concert.location.address.addressLocality}}, {{concert.location.address.addressRegion}}, {{concert.location.address.addressCountry}}</td>
-                <td>{{concert.startDate}}</td>
-                <td><a href="">{{concert.performer.0.name}}</a>, <a href="">{{concert.performer.1.name}}</a>, <a href="">{{concert.performer.2.name}}</a></td>
-            </tr>
-    {% endfor %}
-        </tbody>
-    </table>
+    <main>
+        <div class="p-5">
+            <h1 class="text-center text-light">Upcoming Concerts</h1>
+            <p class="text-center">{{empty}}</p>
+            <div>
+                <a href="/" class="btn btn-secondary btn-lg active mb-3" role="button" aria-pressed="true">Search Again!</a>
+                <table class="table border border-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Artist</th>
+                            <th scope="col">Venue</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">All Peformers</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #e3faff;">
+                {% for concert in concerts %}  
+                        <tr>
+                            <td>{{concert.artist}}</td>
+                            <td>{{concert.venue}}</td>
+                            <td>{{concert.location}}</td>
+                            <td>{{concert.performance_date}}</td>
+                            <td><form action="./" method="GET">
+                                <label class="btn btn-link m-0 p-0"><input type="radio" name="artist" class="d-none" onclick="javascript: submit();" value="{{concert.coperformersId.band1}}">{{concert.coperformersId.band1}}</label>
+                                <label class="btn btn-link m-0 p-0"><input type="radio" name="artist" class="d-none" onclick="javascript: submit();" value="{{concert.coperformersId.band2}}">{{concert.coperformersId.band2}}</label>
+                                <label class="btn btn-link m-0 p-0"><input type="radio" name="artist" class="d-none" onclick="javascript: submit();" value="{{concert.coperformersId.band3}}">{{concert.coperformersId.band3}}</label>
+                            </form></td>
+                        </tr>
+                {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 
 {% endblock content%}
