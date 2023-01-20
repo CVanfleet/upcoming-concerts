@@ -1,11 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 import requests
 import json
 from concerts.settings import API_KEY
 from upcoming.models import Concert, CoPerformers
-import datetime
+
 
 # Create your views here.
 def upcoming_concerts(request):
@@ -67,8 +65,6 @@ def concerts(request):
                     print("There was a server error")
                     raise t
 
-                else:
-                    print("Something else happened")
         except KeyError:
             print("There was an error processing the request.")
     empty = ''

@@ -130,3 +130,4 @@ dmypy.json
 
 # Pages
 settings.py
+concerts/upcoming/migrations
