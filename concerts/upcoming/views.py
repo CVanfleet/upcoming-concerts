@@ -1,99 +1,69 @@
 from django.shortcuts import render
-import requests
 import json
-from concerts.settings import API_KEY
 from upcoming.models import Concert, CoPerformers
-
+from datetime import datetime, timezone
+import dateutil.parser
+from upcoming.utils import *
+from bson.objectid import ObjectId
 
 # Create your views here.
 def upcoming_concerts(request):
+
+    
+    dbname = get_db_connection()
+    collection = dbname['concert']
+
+    cop = collection.find_one({'_id': ObjectId("64140e0fb0487363ec8dd9aa")})
+
+    print(cop['_id']['band1'])
+
+    '''for concert in concerts:
+        if dateutil.parser.parse(concert['fields']['performance_date']) < datetime.now(timezone.utc):
+            collection2.delete_one({'pk': concert['fields']['coperformersId']})
+            collection.delete_one({'pk': concert['pk']})'''
 
     return render(request, 'upcoming/upcoming-concerts.html') 
 
 
 def concerts(request):
+
+    dbname = get_db_connection()
+
+    concert_coll = dbname['concert']
+    coperformers_coll = dbname['coperformers']
     
-    get_artist = request.GET['artist']
+    searched_artist = request.GET['artist']
 
-    if get_artist == "":
+    if searched_artist == "":
         pass
-    elif not Concert.objects.filter(artist=get_artist).exists():
+    elif concert_coll.count_documents({'artist': searched_artist}) == 0:
 
-        url = "https://concerts-artists-events-tracker.p.rapidapi.com/artist"
+        insert_data_from_api(searched_artist, coperformers_coll, concert_coll)
+        print("Data was inserted successfully")
 
-        querystring = {"name": get_artist,"page":"1"}  #add perameter <artist> where 'Ed Sheeran' is
-
-        headers = {
-            "X-RapidAPI-Key": API_KEY,
-            "X-RapidAPI-Host": "concerts-artists-events-tracker.p.rapidapi.com"
-        }
-
-        response = requests.request("GET", url, headers=headers, params=querystring)
-
-        concerts_data = response.text
-        concerts_input = json.loads(concerts_data)  
-
-        try:
-
-            for concert in concerts_input['data']:
-                try:
-                    
-                    coperformers = CoPerformers(
-                        band1 = check_performers(concert['performer'], 0),
-                        band2 = check_performers(concert['performer'], 1),
-                        band3 = check_performers(concert['performer'], 2)
-                    )
-                    coperformers.save()
-
-                    con = Concert(
-                        artist = concert['name'],
-                        venue = concert['location']['name'],
-                        location = f"{concert['location']['address']['addressLocality']}, {check_region(concert['location']['address'])} {concert['location']['address']['addressCountry']}",
-                        performance_date = concert['startDate'],
-                        coperformersId = coperformers
-                    )
-                    con.save()
-                    
-
-                except TypeError as t:
-                    con.delete()
-                    try:
-                        coperformers.delete()
-                    except UnboundLocalError:
-                        print("coperformers do not exist")
-
-                    print("There was a server error")
-                    raise t
-
-        except KeyError:
-            print("There was an error processing the request.")
     empty = ''
 
-    if Concert.objects.all().filter(artist=get_artist).exists():
-        concerts = Concert.objects.all().filter(artist=get_artist)
+    concert_count = concert_coll.count_documents({'artist': searched_artist})
+
+    if concert_count >= 5:
+        concerts = concert_coll.find({'artist': searched_artist})
+    elif concert_count < 5 and concert_count > 0:
+        concert_coll.delete_many({'artist': searched_artist})
+        insert_data_from_api(searched_artist, coperformers_coll, concert_coll)
     else:
         concerts = ''
         empty = "No records found"
 
     return render(request, 'upcoming/concerts.html', {
         'title': 'Home',
-        'concerts': concerts, #['data'],
+        'concerts': concerts, 
         'empty': empty,
         })
 
 def saved_concerts(request):
 
-    return render(request, 'upcoming/saved.html', {'title': 'Saved Concerts'}) 
+    return render(request, 'upcoming/saved.html', {'title': 'Saved Concerts'})
 
 
-def check_region(address):
-    if "addressRegion" in address:
-        return address["addressRegion"]
-    else:
-        return ""
 
-def check_performers(list, index):
-    if 0 <= index < len(list):
-        return list[index]['name']
-    else:
-        return ""
+
