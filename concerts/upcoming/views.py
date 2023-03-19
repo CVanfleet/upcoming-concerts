@@ -15,7 +15,6 @@ def upcoming_concerts(request):
 
     cop = collection.find_one({'_id': ObjectId("64140e0fb0487363ec8dd9aa")})
 
-    print(cop['_id']['band1'])
 
     '''for concert in concerts:
         if dateutil.parser.parse(concert['fields']['performance_date']) < datetime.now(timezone.utc):

@@ -43,3 +43,49 @@ HTML
 * Create model for a favorites table and include functionality for users to save their favorite concerts
 * When querying the database tables, the strings are case sensitive which has been causing some issues
 * Allow the user to click on a link to navigate where they can buy tickets
+
+
+# ** Changed the Database! **
+
+# Overview
+
+The cloud is the future! I wanted to get some experience with NoSQL and try my luck with MongoDB!
+
+This project was originally using the SQLite database that is provided by Django, and I was able to transfer all the data, and configure inserts for more data into my new MongoDB database.
+
+I love the simplicity that MongoDB provides! It was a quick and painless (mostly) process!
+
+[Software Demo Video](https://youtu.be/sC9jGnv_HkA)
+
+# Cloud Database
+
+I created a MongoDB database with two collections. 
+
+1. Concerts
+    - This contains concert documents
+2. CoPerformers
+    - This contains the coperformers at each concert
+
+# Development Environment
+
+Python's Django framework
+
+Bootstrap
+
+MongoDB
+
+Python
+
+HTML
+
+# Useful Websites
+
+- [Tutorials Point](https://www.tutorialspoint.com/mongodb/mongodb_quick_guide.htm#:~:text=If%20you%20want%20to%20check,use%20the%20command%20show%20dbs.&text=Your%20created%20database%20(mydb)%20is,least%20one%20document%20into%20it.)
+- [Mongodb](https://www.mongodb.com/docs/mongodb-shell/)
+
+# Future Work
+
+- Fix display so all performers get displayed
+- Add feature to delete old concert data
+- Improve Search
+- Format Date on page
